@@ -28,6 +28,7 @@ class User(BaseModel):
         super(User, self).__init__(id)
         self._username = username
         self._hashpw = hashpw
+        self._email = email
 
     @property
     def username(self):

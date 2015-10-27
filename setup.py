@@ -16,12 +16,12 @@ install_requires = [
 
 setup(
     name='Flask-Sentinel',
-    version='0.0.5',
+    version='0.0.6',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    author='Nicola Iarocci',
-    author_email='nicola@nicolaiarocci.com',
-    url='https://github.com/nicolaiarocci/flask-sentinel',
+    author='Daniel Anggrianto',
+    author_email='daniel@anggrianto.com',
+    url='https://github.com/danggrianto/flask-sentinel',
     license='BSD',
     platforms=["any"],
     packages=find_packages(),
