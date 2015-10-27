@@ -6,11 +6,13 @@
     :copyright: (c) 2015 by Nicola Iarocci.
     :license: BSD, see LICENSE for more details.
 """
+import os
 from flask import render_template, request
 
 from .core import oauth
 from .data import Storage
 from .basicauth import requires_basicauth
+from .mail import send_email
 
 
 @oauth.token_handler
@@ -30,8 +32,22 @@ def access_token(*args, **kwargs):
 def management():
     """ This endpoint is for vieweing and adding users and clients. """
     if request.method == 'POST' and request.form['submit'] == 'Add User':
+        email = request.form['email']
         Storage.save_user(request.form['username'], request.form['password'],
-                          request.form['email'])
+                          email)
+        message = {
+            'auto_html': None,
+            'auto_text': None,
+            'from_email': os.getenv('FROM_EMAIL') or 'from@example.com',
+            'from_name': os.getenv('FROM_NAME') or 'Example Name',
+            'html': '<p>Example HTML content</p>',
+            'subject': 'Your Account is created!',
+            'tags': ['user-registration'],
+            'to': [{'email': email,
+                    'type': 'to'}],
+            'track_clicks': True,
+            'track_opens': True}
+        send_email(message)
     if request.method == 'POST' and request.form['submit'] == 'Add Client':
         Storage.generate_client()
     return render_template('management.html', users=Storage.all_users(),

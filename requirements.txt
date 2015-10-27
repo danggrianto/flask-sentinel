@@ -3,3 +3,4 @@ Flask-PyMongo
 bcrypt
 pyOpenSSL
 redis
+mandrill

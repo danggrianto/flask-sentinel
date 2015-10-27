@@ -47,7 +47,7 @@ available at ``https://localhost:5000/oauth/management``.
 
 You can override the default page above with your own. Just drop your custom
 ``management.html`` file in a ``templates`` folder residing in your application
-root. 
+root.
 
 This page can and should have restricted access. In order to achieve that, set
 ``SENTINEL_MANAGEMENT_USERNAME`` and ``SENTINEL_MANAGEMENT_PASSWORD`` in your
@@ -80,40 +80,40 @@ Configuration works like any other `Flask configuration`_. Here are
 the built-in defaults:
 
 ======================================= ======================================
-``SENTINEL_PROVIDER_ROUTE_PREFIX``      Default prefix for OAuth endpoints. 
+``SENTINEL_PROVIDER_ROUTE_PREFIX``      Default prefix for OAuth endpoints.
                                         Defaults to ``/oauth``. Prepends both
                                         token and management urls.
 
 ``SENTINEL_TOKEN_URL``                  Url for token creation endpoint. Set to
                                         ``False`` to disable this feature.
-                                        Defaults to ``/token``, so the 
-                                        complete url is ``/oauth/token``. 
+                                        Defaults to ``/token``, so the
+                                        complete url is ``/oauth/token``.
 
-``SENTINEL_MANAGEMENT_URL``             Url for management endpoint. Set to 
-                                        ``False`` to disable this feature. 
+``SENTINEL_MANAGEMENT_URL``             Url for management endpoint. Set to
+                                        ``False`` to disable this feature.
                                         Defaults to ``/management``, so the
-                                        complete url is ``/oauth/management``. 
+                                        complete url is ``/oauth/management``.
 
-``SENTINEL_REDIS_URL``                  Url for the redis server. Defaults to 
-                                        ``redis://localhost:6379/0``. 
+``SENTINEL_REDIS_URL``                  Url for the redis server. Defaults to
+                                        ``redis://localhost:6379/0``.
 
-``SENTINEL_MONGO_DBNAME``               Mongo database name. Defaults to 
-                                        ``oauth``. 
+``SENTINEL_MONGO_DBNAME``               Mongo database name. Defaults to
+                                        ``oauth``.
 
-``SENTINEL_MANAGEMENT_USERNAME``        Username needed to access the 
+``SENTINEL_MANAGEMENT_USERNAME``        Username needed to access the
                                         management page.
 
-``SENTINEL_MANAGEMENT_PASSWORD``        Password needed to access the 
+``SENTINEL_MANAGEMENT_PASSWORD``        Password needed to access the
                                         management page.
 
-``OAUTH2_PROVIDER_ERROR_URI``           The error page when there is an error, 
-                                        default value is ``/oauth/errors``. 
+``OAUTH2_PROVIDER_ERROR_URI``           The error page when there is an error,
+                                        default value is ``/oauth/errors``.
 
-``OAUTH2_PROVIDER_TOKEN_EXPIRES_IN``    Default Bearer token expires time, 
+``OAUTH2_PROVIDER_TOKEN_EXPIRES_IN``    Default Bearer token expires time,
                                         default is ``3600``.
 
-``OAUTH2_PROVIDER_ERROR_ENDPOINT``      You can also configure the error page 
-                                        uri with an endpoint name. 
+``OAUTH2_PROVIDER_ERROR_ENDPOINT``      You can also configure the error page
+                                        uri with an endpoint name.
 
 ======================================= ======================================
 
@@ -145,10 +145,23 @@ NGINX and proxied to the authentication service.
 *Note: Add `-k` to your `curl` arguments if you are working with an untrusted
 development server running under SSL/TLS.*
 
+~~~~~~~
 Password Hashing
-~~~~~~~~~~~~~~~~
+
 Bcrypt and a randomly generated salt are used to hash each user password before
-it is added to the database. You should never store passwords in plain text! 
+it is added to the database. You should never store passwords in plain text!
+
+
+Send email
+----------
+After account is created an email will be sent to the user.
+The following environment variables need to be exist.
+
+~~~~~~~~~
+MANDRILL_API_KEY : api key from MANDRILL_API_KEY
+FROM_EMAIL: email address of sender
+FROM_NAME: sender name
+~~~~~~~~~
 
 License
 -------
