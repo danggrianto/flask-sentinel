@@ -30,7 +30,8 @@ def access_token(*args, **kwargs):
 def management():
     """ This endpoint is for vieweing and adding users and clients. """
     if request.method == 'POST' and request.form['submit'] == 'Add User':
-        Storage.save_user(request.form['username'], request.form['password'])
+        Storage.save_user(request.form['username'], request.form['password'],
+                          request.form['email'])
     if request.method == 'POST' and request.form['submit'] == 'Add Client':
         Storage.generate_client()
     return render_template('management.html', users=Storage.all_users(),

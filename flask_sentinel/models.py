@@ -24,7 +24,7 @@ class BaseModel(object):
 class User(BaseModel):
     """ User which will be querying resources from the API.
     """
-    def __init__(self, id=None, username=None, hashpw=None):
+    def __init__(self, id=None, username=None, email=None, hashpw=None):
         super(User, self).__init__(id)
         self._username = username
         self._hashpw = hashpw
@@ -36,6 +36,14 @@ class User(BaseModel):
     @username.setter
     def username(self, value):
         self._username = value
+
+    @property
+    def email(self):
+        return self._email
+
+    @email.setter
+    def email(self, value):
+        self._email = value
 
     @property
     def hashpw(self):
