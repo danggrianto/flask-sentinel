@@ -7,15 +7,17 @@
     :license: BSD, see LICENSE for more details.
 """
 import inspect
+import random
+import string
 from collections import namedtuple
 from datetime import datetime, timedelta
 
-import bcrypt
 from werkzeug.security import gen_salt
 
-from .core import mongo, redis
-from .models import Client, User, Token
+import bcrypt
 
+from .core import mongo, redis
+from .models import Client, Token, User
 
 # TODO use SONManipulator instead of custom de/serializers perhaps?
 
@@ -172,12 +174,26 @@ class Storage(object):
         return client
 
     @staticmethod
-    def save_user(username, password, email):
+    def save_user(username=None, password=None, email=None):
+        # generate password if not specified
+        if not password:
+            password = ''.join(
+                random.choice(string.ascii_uppercase + string.digits)
+                for _ in range(10))
         salt = bcrypt.gensalt()
         hash = bcrypt.hashpw(password.encode('utf-8'), salt)
-        user = User(username=username, hashpw=hash, email=email)
-        user.id = mongo.db.users.insert(_to_json(user))
-        return user
+        if username:
+            user = User(username=username, hashpw=hash, email=email)
+            # no duplicates
+            if mongo.db.users.find_one({'username': username}):
+                return {'status': 'error', 'message': 'username already exist'}
+            elif mongo.db.users.find_one({'email': email}):
+                return {'status': 'error', 'message': 'email is already exist'}
+            else:
+                user.id = mongo.db.users.insert(_to_json(user))
+                return {'status': 'success'}
+        else:
+            return {'status': 'error', 'message': 'username is required'}
 
     @staticmethod
     def all_users():
